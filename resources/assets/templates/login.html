@@ -1,0 +1,56 @@
+<div>
+
+    <div>
+
+        <form name="loginForm" ng-submit="vm.login()" novalidate>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input
+                    type="email"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z.]{2,10}$/"
+                    required
+                    name="email"
+                    ng-model="form.email"
+                >
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <p ng-show="loginForm.$submitted && loginForm.email.$error.required"
+                   class="text-danger">Please enter your email.</p>
+                <p ng-show="loginForm.$submitted && loginForm.email.$error.pattern"
+                   class="text-danger">The email must be a valid email address.</p>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="Password"
+                    ng-model="form.password"
+                    name="password"
+                    required
+                >
+                <p ng-show="loginForm.$submitted && loginForm.password.$error.required"
+                   class="text-danger">Please enter your password.</p>
+            </div>
+            <div class="form-check">
+                <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="exampleCheck1"
+                        ng-model="form.remember"
+                >
+                <label class="form-check-label" for="exampleCheck1">Remember</label>
+            </div>
+            <button
+                    type="submit"
+                    class="btn btn-primary"
+            >Submit</button>
+        </form>
+
+    </div>
+
+</div>

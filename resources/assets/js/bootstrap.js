@@ -1,55 +1,144 @@
+import 'angular-route';
+import 'angular-cookies';
+import 'angular-resource';
+import 'angular-ui-mask';
+import 'angular-utf8-base64';
+import 'angular-jwt-auth';
+import 'angular-ui-bootstrap';
 
-window._ = require('lodash');
+module.exports = {
+    init: function (platform) {
+        window._ = require('lodash');
+        window.moment = require('moment');
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
+        /**
+         //  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+         //  * for JavaScript based Bootstrap features such as modals and tabs. This
+         //  * code may be modified to fit the specific needs of your application.
+         //  */
+        try {
+            window.$ = window.jQuery = require('jquery');
+            require('bootstrap-sass');
 
-try {
-    window.$ = window.jQuery = require('jquery');
+            this.setModules(platform);
+            this.setServices(platform);
+            this.setFactories(platform);
+            this.setFilters(platform);
+            this.setDirectives(platform);
+            this.setControllers(platform);
+            this.setRoutes(platform);
+            this.setConstants(platform);
+            this.setAuth(platform);
+            this.setRun(platform);
 
-    require('bootstrap-sass');
-} catch (e) {}
+        } catch (e) {
+            console.log(e);
+        }
 
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
+    },
 
-window.axios = require('axios');
+    /**
+     * load all modules
+     */
+    setModules: platform => {
+        angular.module('platform', platform.modules);
+    },
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    /**
+     * Services
+     */
+    setServices: platform => {
+        _.each(platform.services, (value, key) => {
+            angular.module('platform').service(key, value);
+        });
+    },
 
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
+    /**
+     * Factories
+     */
+    setFactories: platform => {
+        _.each(platform.factories, (value, key) => {
+            angular.module('platform').factory(key, value.getInstance);
+        });
+    },
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+    /**
+     * Filters
+     */
+    setFilters: platform => {
+        _.each(platform.filters, (value, key) => {
+            angular.module('platform').filter(key, () => value.getInstance);
+        });
+    },
 
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+    /**
+     * Directives
+     */
+    setDirectives: platform => {
+        _.each(platform.directives, (value, key) => {
+            angular.module('platform').directive(key, () => new value());
+        });
+    },
+    /**
+     * Controllers
+     */
+    setControllers: platform => {
+        _.each(platform.controllers, (value, key) => {
+            angular.module('platform').controller(key, value);
+        });
+    },
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+    /**
+     * Constants
+     */
+    setConstants: platform => {
+        _.each(platform.constants, (value, key) => {
+            angular.module('platform').constant(key, value);
+        });
+    },
 
-// import Echo from 'laravel-echo'
+    /**
+     * Routes
+     */
+    setRoutes: platform => {
+        angular.module('platform').config(($routeProvider, $locationProvider, projectStatus) => {
 
-// window.Pusher = require('pusher-js');
+            _.each(platform.routes, (value, key) => {
+                $routeProvider.when(key, value(projectStatus.current))
+            });
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key',
-//     cluster: 'mt1',
-//     encrypted: true
-// });
+            $routeProvider.otherwise(platform.routeOtherwise);
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+        });
+    },
+
+    setAuth: platform => {
+        angular.module('platform')
+            .config(['ngJwtAuthServiceProvider', 'appConfig', (ngJwtAuthServiceProvider, appConfig) => {
+                ngJwtAuthServiceProvider.configure({
+                    tokenLocation: 'token',
+                    apiEndpoints: {
+                        base: appConfig.server.api,
+                        login: '/login',
+                        tokenExchange: '/token',
+                        refresh: '/refresh'
+                    },
+                    tokenUser: 'user'
+                })
+            }])
+            .config(['$compileProvider', function( $compileProvider ){
+                    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|scheme|wonecall):/);
+                }
+            ])
+    },
+
+    /**
+     * run
+     */
+    setRun: platform => {
+        angular.module('platform').run(platform.run);
+    }
+};

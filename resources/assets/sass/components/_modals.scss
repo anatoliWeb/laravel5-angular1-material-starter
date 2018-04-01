@@ -1,0 +1,119 @@
+.modal-content {
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+  border-radius: 35px;
+}
+
+.modal-header, .modal-footer {
+  border: none;
+  color: #fff;
+  text-align: center;
+  padding: 0 15px;
+}
+
+.modal-body {
+  .errors, .success {
+    text-align: center;
+    height: auto;
+    min-height: 10%;
+    position: relative;
+    padding: 43px 15px 37px 15px;
+    z-index: 3;
+    opacity: .9;
+    border-radius: 10px;
+    .message {
+      font-size: 24px;
+      color: white;
+    }
+  }
+  .errors {
+    background-color: #D11;
+  }
+  .success {
+    background-color: #3AAF19;
+  }
+}
+.modal-close {
+  color: #fff;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: block;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  &:not(.modal-close--small) {
+    border: 1px solid #fff;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+  }
+  &--small {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    z-index: 55;
+    border: none;
+  }
+  &:before, &:after {
+    content: "";
+    border-top: 1px solid #fff;
+    background: none;
+    width: 21px;
+    position: absolute;
+    height: 23px;
+  }
+  &:before {
+    left: -4px;
+    top: 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  &:after {
+    width: 20px;
+    left: 12px;
+    top: 10px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+}
+
+.modal-dialog {
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.modal-content  {
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  left: 0;
+
+  label {
+    color: #fff;
+  }
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.modal-backdrop.in {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+}
+
+.card-form {
+  padding: 40px;
+  border-radius: 35px;
+  background-color: rgba(12, 255, 20, 0.6);
+}

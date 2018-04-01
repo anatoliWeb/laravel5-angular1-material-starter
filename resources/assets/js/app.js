@@ -1,22 +1,39 @@
+import 'angular';
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import {controllers} from './core/controllers';
+import {services} from './core/services';
+import {factories} from './core/factories';
+import {filters} from './core/filters';
+import {directives} from './core/directives';
+import {constants} from './core/constants';
+import {routes} from './core/routes';
+import {Run} from './index.run';
 
-require('./bootstrap');
+let platform = {
+    'modules': [
+        'ngRoute',
+        'ngCookies',
+        'ngJwtAuth',
+        'templates',
+        'appTemplates',
+        'ui.bootstrap',
+    ],
+    'controllers': controllers,
+    'services': services,
+    'factories': factories,
+    'filters': filters,
+    'directives': directives,
+    'constants': constants,
+    'routes': routes,
+    'routeOtherwise': {
+        'redirectTo': '/'
+    },
+    'run': Run
+}
 
-window.Vue = require('vue');
+// index run
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+console.log('app downloaded');
+var app = require('./bootstrap');
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+app.init(platform);

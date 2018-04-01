@@ -14,3 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// dashboard view
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+Route::get('/dashboard/{var?}', function () {
+    return view('dashboard');
+});
+
+Route::get('/dashboard/{var}', function () {
+    return view('dashboard');
+})->where('var', '.*');

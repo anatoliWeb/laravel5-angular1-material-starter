@@ -3,7 +3,40 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
-@import "variables";
+@import "components/variables";
 
 // Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+/*******************************/
+/* Import mixins */
+/*******************************/
+@import "components/mixins";
+
+/*******************************/
+/* Import default elements styles */
+/*******************************/
+@import "components/default-elements";
+
+
+/*******************************/
+/* Import Forms styles */
+/*******************************/
+@import "components/forms";
+
+/*******************************/
+/* Import pagination */
+/*******************************/
+@import "components/pagination";
+
+/*******************************/
+/* Import modals */
+/*******************************/
+@import "components/modals";
+
+/*******************************/
+/* Import animate styles */
+/*******************************/
+@import "components/animate";
